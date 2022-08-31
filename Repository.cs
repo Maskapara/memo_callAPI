@@ -9,7 +9,6 @@ namespace ConsoleApp6
 	{
 		[JsonPropertyName("name")]
 		public string Name { get; set; }
-
-
 	}
+
 }

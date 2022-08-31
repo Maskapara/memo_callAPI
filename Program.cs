@@ -14,12 +14,16 @@ namespace ConsoleApp6
 
 		static async Task Main(string[] args)
 		{
-			await ProcessRepositories();
+			var repositories = await ProcessRepositories();
 			//await pr2();
+
+			foreach (var repo in repositories)
+				Console.WriteLine(repo.Name);
+
 			Console.ReadLine();
 		}
 
-		private static async Task ProcessRepositories()
+		private static async Task<List<Repository>> ProcessRepositories()
 		{
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(
@@ -30,10 +34,7 @@ namespace ConsoleApp6
 			var streamTask = client.GetStreamAsync("https://api.github.com/orgs/dotnet/repos");
 			var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
 
-			foreach(var repo in repositories)
-			{
-				Console.WriteLine(repo.Name);
-			}
+			return repositories;
 
 		}
 
@@ -45,5 +46,6 @@ namespace ConsoleApp6
 			var msg = await stringTask;
 			Console.Write(msg);
 		}
+
 	}
 }
