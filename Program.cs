@@ -14,11 +14,15 @@ namespace ConsoleApp6
 
 		static async Task Main(string[] args)
 		{
-			var repositories = await ProcessRepositories();
-			//await pr2();
+			//var repositories = await ProcessRepositories();
+			//await ProcessRepositories2();
+			var pr = await PersonRepository();
 
-			foreach (var repo in repositories)
-				Console.WriteLine(repo.Name);
+
+			//foreach (var repo in repositories)
+			//	Console.WriteLine(repo.Name);
+
+			Console.WriteLine($"sucess:{pr.Success}\ndata:{pr._Data}");
 
 			Console.ReadLine();
 		}
@@ -39,12 +43,20 @@ namespace ConsoleApp6
 		}
 
 		//通常のWebAPIコール
-		private static async Task pr2()
+		private static async Task ProcessRepositories2()
 		{
 			var stringTask = client.GetStringAsync("https://umayadia-apisample.azurewebsites.net/api/persons/Shakespeare");
 
 			var msg = await stringTask;
 			Console.Write(msg);
+		}
+
+		private static async Task<Person> PersonRepository()
+		{
+			var streamTask = client.GetStreamAsync("https://umayadia-apisample.azurewebsites.net/api/persons");
+			var repository = await JsonSerializer.DeserializeAsync<Person>(await streamTask);
+
+			return repository;
 		}
 
 	}
