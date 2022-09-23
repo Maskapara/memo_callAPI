@@ -14,50 +14,22 @@ namespace ConsoleApp6
 
 		static async Task Main(string[] args)
 		{
-			//var repositories = await ProcessRepositories();
-			//await ProcessRepositories2();
-			var pr = await PersonRepository();
-
-
+			//MSDNドキュメント
+			//var repositories = await AsyncRequest.ProcessRepositories(client);
 			//foreach (var repo in repositories)
 			//	Console.WriteLine(repo.Name);
 
+			//MSDNドキュメント
+			//await AsyncRequest.ProcessRepositories2(client);
+
+			//MSDNドキュメント→jsonデシリアイズ汎用化
+			var pr = await AsyncRequest.PersonRepository(client);
 			Console.WriteLine($"sucess:{pr.Success}\ndata:{pr._Data}");
 
 			Console.ReadLine();
 		}
 
-		private static async Task<List<Repository>> ProcessRepositories()
-		{
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(
-				new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-			client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-
-			var streamTask = client.GetStreamAsync("https://api.github.com/orgs/dotnet/repos");
-			var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
-
-			return repositories;
-
-		}
-
-		//通常のWebAPIコール
-		private static async Task ProcessRepositories2()
-		{
-			var stringTask = client.GetStringAsync("https://umayadia-apisample.azurewebsites.net/api/persons/Shakespeare");
-
-			var msg = await stringTask;
-			Console.Write(msg);
-		}
-
-		private static async Task<Person> PersonRepository()
-		{
-			var streamTask = client.GetStreamAsync("https://umayadia-apisample.azurewebsites.net/api/persons");
-			var repository = await JsonSerializer.DeserializeAsync<Person>(await streamTask);
-
-			return repository;
-		}
 
 	}
 }
