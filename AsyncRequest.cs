@@ -11,7 +11,7 @@ namespace ConsoleApp6
 {
 	internal class AsyncRequest
 	{
-		internal static async Task<List<Repository>> ProcessRepositories(HttpClient client)
+		internal static async Task<List<DeserializeEach.DotnetRepos>> ProcessRepositories(HttpClient client, DeserializeEach.URLJson urls)
 		{
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(
@@ -19,26 +19,28 @@ namespace ConsoleApp6
 			client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
 
-			var streamTask = client.GetStreamAsync("https://api.github.com/orgs/dotnet/repos");
-			var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+			//dotnetRepos例
+			var streamTask = client.GetStreamAsync(urls.Urls.Repos);
+			var repositories = await JsonSerializer.DeserializeAsync<List<DeserializeEach.DotnetRepos>>(await streamTask);
 
 			return repositories;
 
 		}
 
-		internal static async Task ProcessRepositories2(HttpClient client)
+		internal static async Task ProcessRepositories2(HttpClient client, DeserializeEach.URLJson urls)
 		{
-			var stringTask = client.GetStringAsync("https://umayadia-apisample.azurewebsites.net/api/persons/Shakespeare");
+			//shakeseare例
+			var stringTask = client.GetStringAsync(urls.Urls.shake);
 
 			var msg = await stringTask;
 			Console.Write(msg);
 		}
 
-		//通常のWebAPIコール
-		internal static async Task<Person> PersonRepository(HttpClient client)
+		internal static async Task<DeserializeEach.Persons> PersonRepository(HttpClient client,DeserializeEach.URLJson urls)
 		{
-			var streamTask = client.GetStreamAsync("https://umayadia-apisample.azurewebsites.net/api/persons");
-			var repository = await JsonSerializer.DeserializeAsync<Person>(await streamTask);
+			//Persons例
+			var streamTask = client.GetStreamAsync(urls.Urls.persons);
+			var repository = await JsonSerializer.DeserializeAsync<DeserializeEach.Persons>(await streamTask);
 
 			return repository;
 		}

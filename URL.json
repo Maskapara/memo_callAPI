@@ -1,0 +1,7 @@
+{
+	"urls": {
+		"dotnetRepos": "https://api.github.com/orgs/dotnet/repos",
+		"shakeseare": "https://umayadia-apisample.azurewebsites.net/api/persons/Shakespeare",
+		"persons": "https://umayadia-apisample.azurewebsites.net/api/persons"
+	}
+}
